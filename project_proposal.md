@@ -14,7 +14,7 @@ To overcome these limitations, we aim to develop a machine learning model that a
 
 Our model will be trained starting from data collected during a speed dating experiment. In such an experiment, participants were posed different questions about themselves and their ideal partner, with the goal of studying dating behaviour. We believe that the same questions could be easily replicable in any dating application during the user's registration process, and used as input to predict whether a given match would be successful or not.
 
-In this way the system can propose to the user people with a successful predicted match.
+In this way, the system can propose to the user people with a successfully predicted match.
 
 ## Methodology and experiments
 
