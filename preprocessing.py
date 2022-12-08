@@ -32,17 +32,16 @@ def load_dataset(dataset_file):
 
     # extract the label column, and remove it from the original dataframe
     y = X['match']
-    X.drop('match', inplace=True)
+    X.drop('match', axis='columns', inplace=True)
 
     return X, y
 
 
 
-def split_dataset(X, y, test=0.3, stratify=True, k=5):
+def split_dataset(X, y, test=0.3, stratify=True):
     """
-    Splits the dataset into training and test set, then create KFold model.
+    An utility wrapper for train_test_split.
 
-    
     Parameters
     ----------
     X: DataFrame
@@ -53,8 +52,6 @@ def split_dataset(X, y, test=0.3, stratify=True, k=5):
         The fraction of the dataset we want to keep as test set
     stratify: bool, optional (default is True)
         Whether we want the split to keep the same proportion between classes as the original dataset
-    k: int, optional (default is 5)
-        The number of folds for the k-fold validation approach
 
     Returns
     -------
@@ -62,8 +59,6 @@ def split_dataset(X, y, test=0.3, stratify=True, k=5):
         Samples and relative labels for the training set
     X_te, y_te
         Samples and relative labels for the test set
-    kf
-        KFold model (to be applied on X_tr, y_tr)
 
     """
     
@@ -71,11 +66,7 @@ def split_dataset(X, y, test=0.3, stratify=True, k=5):
     stratify = (y if stratify else None)
     X_tr, X_te, y_tr, y_te = train_test_split(X, y, test_size=test, stratify=stratify)
 
-    # create the k-fold class
-    kf = KFold(n_splits=k, shuffle=True)
-
-    return X_tr, y_tr, X_te, y_te, kf
-
+    return X_tr, y_tr, X_te, y_te
 
 
 #########################################
@@ -88,10 +79,4 @@ if __name__ == "__main__":
 
     # first, we load the dataset
     X, y = load_dataset('./data/data.pkl')
-    # then, we split it
-    X_tr, y_tr, X_te, y_te, kf = split_dataset(X, y)
-
-
-
-
-
+    #FIXME
