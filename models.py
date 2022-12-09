@@ -27,19 +27,19 @@ def knn():
 
 
 def logistic_regression():
-    max_iter = 250  # maximum number of iterations
+    max_iter = 250000  # maximum number of iterations
     
     # C = inverse of regularization strength (smaller = stronger regularization)
     lr = LogisticRegression(solver='newton-cg', max_iter=max_iter)
     grid = {
-        'C': [1, 10, 100, 10000]
+        'C': [100]
     }
 
     return lr, grid
 
 
 def svm():
-    max_iter = 250  # maximum number of iterations
+    max_iter = 25000  # maximum number of iterations
     
     clf = SVC(max_iter=max_iter)
     grid = {
@@ -47,3 +47,7 @@ def svm():
     }
 
     return clf, grid
+
+
+def random_forest():
+    return
