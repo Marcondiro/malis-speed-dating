@@ -28,7 +28,76 @@ The two biggest and time consuming issues faced with the dataset were:
 1. Analyse and understand the semantics of the couluns to understand if the same feature could be retreived in the dating app context in the registration phase.
 2. Manage the inconsistency between the survey methodologies used in the different waves of the event.
 
-After the selection process only 57 columns are left, the detailed reasons for the removal of each column are explained in the _Dataset_analysis_ notebook.
+After the selection process only 57 columns are left, the detailed reasons for the removal of each column are explained in the _Dataset_analysis_ notebook. Here we briefly describe the features that we have selected:
+- __iid__: id of the person participating in the event
+- __gender__: gender of the person
+- __pid__: partner id
+- __match__: match (label of the model)
+- __age__
+- __field_cd__: Field of study (coded)
+- __race__ (coded)
+- __imprace__: How important is it for the person (on a scale of 1-10) that a person she dates is of the same racial/ethnic background.
+- __goal__: primary goal in participating in the event (coded)
+- __date__: How frequently the person goes on dates (coded)
+- __go_out__: How often the person goes out (not necessarily on dates) (coded)
+- __career_c__: Intended career (coded)
+- __sports__: interest in Playing sports/ athletics on a scale of 1-10
+- __tvsports__: interest in Watching sports
+- __excersice__: interest in Body building/exercising
+- __dining__: interest in Dining out
+- __museums__: interest in Museums/galleries
+- __art__: interest in Art
+- __hiking__: interest in Hiking/camping
+- __gaming__: interest in Gaming
+- __clubbing__: interest in Dancing/clubbing
+- __reading__: interest in Reading
+- __tv__: interest in Watching TV
+- __theater__: interest in Theater
+- __movies__: interest in Movies
+- __concerts__: interest in Going to concerts
+- __music__: interest in Music
+- __shopping__: interest in Shopping
+- __yoga__: interest in Yoga/meditation
+
+100 points to be distributed among the following attributes, more points to those attributes that are more important in a potential date and fewer points to those attributes that are less important in a potential date. Total points must equal 100.
+- __attr1_1__: Attractive
+- __sinc1_1__:  Sincere
+- __intel1_1__: Intelligent
+- __fun1_1__: Fun
+- __amb1_1__: Ambitious
+- __shar1_1__: Has shared interests/hobbies
+
+What the person thinks MOST of men/women look for in the opposite sex.
+100 points to be distributed among the following attributes, more points to those attributes that are more important in a potential date and fewer points to those attributes that are less important in a potential date. Total points must equal 100.
+- __attr4_1__: Attractive
+- __sinc4_1__: Sincere
+- __intel4_1__: Intelligent
+- __fun4_1__: Fun
+- __amb4_1__: Ambitious
+- __shar4_1__: Shared Interests/Hobbies
+
+What the person thinks the opposite sex looks for in a date.
+100 points distributed among the following attributes, more points more important. Total points must equal 100.
+- __attr2_1__: Attractive
+- __sinc2_1__: Sincere
+- __int2_1,__: Intelligent
+- __fun2_1__: Fun
+- __amb2_1__: Ambitious
+- __shar2_1__: Has shared interests/hobbies
+
+How the person rates herself. Scale of 1-10
+- __attr3_1__: Attractive
+- __sinc3_1__: Sincere
+- __int3_1__: Intelligent
+- __fun3_1__: Fun
+- __amb3_1__: Ambitious
+
+Person's opinion on how she is perceived by others. Scale of 1-10
+- __attr5_1__: Attractive
+- __sinc5_1__: Sincere
+- __int5_1__: Intelligent
+- __fun5_1__: Fun
+- __amb5_1__: Ambitious
 
 To tackle the second problem, we remove from the dataset the data collected with different criterias, since it hasn't been possible to map that data into a form consistent with the rest of the data. Also, the records containing `NA` values has been dropped.
 
@@ -38,9 +107,8 @@ After completing the cleaning procedure, we obtain 3982 "No match" samples and 7
 
 ### Reshaping the dataset
 Then, we reshape the data into a suitable form for the ML algorithms. We also tried to minimize the memory requirements by choosing optimal datatypes.
-
-
-...
+In particular, we use the `iid` and `pid` fields to join the dataframe with itself, in this way in each record there are all the answers of the person and all the answers of the partner.
+Then we drop the `iid` and `pid` fields .
 
 ### Applying one hot encoding
 Since the dataset contains a vast majority of categorical features, we have to choose the proper encoding for each of them. In particular, we observe two different cases:
