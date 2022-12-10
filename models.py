@@ -12,31 +12,33 @@ All methods in the models.py file return a classifier and a grid dictionary.
 """
 
 from sklearn.neighbors import KNeighborsClassifier  # to perform kNN
-from sklearn.linear_model import LogisticRegression # to perform logistic regression
-from sklearn.ensemble import RandomForestClassifier # to perform RandomForest 
+# to perform logistic regression
+from sklearn.linear_model import LogisticRegression
+from sklearn.ensemble import RandomForestClassifier  # to perform RandomForest
 from sklearn.svm import SVC  # to perform SVM classification
 from sklearn.decomposition import PCA
 from sklearn.preprocessing import StandardScaler
 from imblearn.pipeline import Pipeline
 from imblearn.over_sampling import SMOTE
 
+
 def knn():
-    k_min = 1
-    k_max = 10
+    K_MIN = 1
+    K_MAX = 10
 
     knn = KNeighborsClassifier()
     grid = {
-        'n_neighbors': list(range(k_min, k_max+1))
+        'n_neighbors': list(range(K_MIN, K_MAX+1))
     }
 
     return knn, grid
 
 
 def logistic_regression():
-    max_iter = 250000000  # maximum number of iterations
-    
+    MAX_ITER = 250000000  # maximum number of iterations
+
     # C = inverse of regularization strength (smaller = stronger regularization)
-    lr = LogisticRegression(solver='newton-cg', max_iter=max_iter)
+    lr = LogisticRegression(solver='newton-cg', max_iter=MAX_ITER)
     grid = {
         'C': [10, 100, 10000]
     }
@@ -45,9 +47,9 @@ def logistic_regression():
 
 
 def svm():
-    max_iter = 25000  # maximum number of iterations
-    
-    clf = SVC(max_iter=max_iter)
+    MAX_ITER = 25000  # maximum number of iterations
+
+    clf = SVC(max_iter=MAX_ITER)
     grid = {
         'kernel': ['linear', 'rbf']
     }
@@ -150,7 +152,7 @@ def over_sampling(estimator_f, **params):
     # if estimator is a pipeline
     if estimator.__class__.__name__ == 'Pipeline':
         pipe = estimator
-        pipe.steps.insert(0,['over_sampler', smote])
+        pipe.steps.insert(0, ['over_sampler', smote])
     else:
         # create the pipeline
         pipe = Pipeline(steps=[('over_sampler', smote), ('model', estimator)])

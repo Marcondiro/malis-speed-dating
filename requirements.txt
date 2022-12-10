@@ -3,4 +3,4 @@ pandas == 1.5.*
 matplotlib == 3.6.*
 scikit-learn == 1.2.*
 imbalanced-learn == 0.10.*
-seaborn = 0.12.*
+seaborn == 0.12.*

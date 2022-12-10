@@ -108,7 +108,7 @@ After completing the cleaning procedure, we obtain 3982 "No match" samples and 7
 ### Reshaping the dataset
 Then, we reshape the data into a suitable form for the ML algorithms. We also tried to minimize the memory requirements by choosing optimal datatypes.
 In particular, we use the `iid` and `pid` fields to join the dataframe with itself, in this way in each record there are all the answers of the person and all the answers of the partner.
-Then we drop the `iid` and `pid` fields .
+Then we drop the `iid` and `pid` fields.
 
 ### Applying one hot encoding
 Since the dataset contains a vast majority of categorical features, we have to choose the proper encoding for each of them. In particular, we observe two different cases:

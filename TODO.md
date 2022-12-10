@@ -18,10 +18,11 @@
 - [ ] Understand how to handle imbalance in the dataset @All
 - [ ] Write how we will manage missing categories in the dataset when will implement the model
 - [ ] Choose the portion for th TVT split
+- [ ] KNN doesn't suck too much, give it a shot and try it with ONLY interactions? M.
 
 - [ ] Update report
     - [ ] Motivation @Ilaria
-    - [ ] Dataset_analysys stuff @Marco
+    - [x] Dataset_analysys stuff @Marco
         - [ ] 1-hot en @Ilaria
     - [ ] Methods @Mayank
         - [ ] Say that we use K-fold + grid search
