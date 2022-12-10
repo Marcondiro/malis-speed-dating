@@ -159,7 +159,6 @@ def interactions(X, drop=False):
         [c for c in columns if re_y.match(c)], 
         [re.sub(re_sub, '', c) for c in columns if re_x.match(c)]
     ]
-    pairs = [['angles_x'], ['angles_y'], ['angles']]
 
     X[pairs[2]] = np.multiply(X[pairs[0]], np.asarray(X[pairs[1]]))
     
@@ -200,4 +199,4 @@ if __name__ == "__main__":
     model, grid = model_f()
     # call grid_search
     out = grid_search(X_tr, y_tr, model, grid, k)
-    a = 0
+
