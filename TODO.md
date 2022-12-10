@@ -4,6 +4,7 @@
     - [x] Find useless features
     - [x] Remove features not retrievable by the app
     - [x] Map textual fields into categorical features
+    - [ ] Rename OneHotEncoded columns with category name.
     - [x] Produce a dataframe as output
 
 - [ ] Prediction
