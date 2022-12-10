@@ -65,54 +65,71 @@ Since the dataset contains a vast majority of categorical features, we have to c
 	| 6 | Other |
 Clearly, the two cases need to be addressed separately. While a standard encoding is appropriate to represent case (1), we want to apply one hot encoding to case (2), so that our models do not assume any scale of importance among different values.
 
-Overall, we apply one hot encoding to the features `field_cd`, `race`, `goal`, `career_c` for both `_x` and `_y`.
+Overall, we apply one hot encoding to the features `field_cd`, `race`, `goal`, `career_c` for both members of the couple.
 
-After this final step, we obtain a total of 187 features (excluding the label `match`).
+After this final step, we obtain a total of __186__ features (excluding the label `match`).
 
 ## Methodology
-- k-fold
-- grid search
-- interactions
+When analysing the dataset, we first split it into training and test set (80-20 ratio). We leave the test set untouched, to avoid taking biased decisions on our models, and we fed the dataset to a grid search algorithm, implementing a 5-fold cross validation approach. This way, we are able to optimize our models' hyperparameters, and to value our data as much as possible.
 
-TODO
+Moreover, we analysed the effect of some preprocessing techniques, such as feature scaling, , feature interactions, Principal Component Analysis (PCA) and Synthetic Minority Over-sampling Technique (SMOTE).
+
+### Feature interactions
+Recall that, in our dataset, each column is present in two separate instances, one for each member of the couple. We believe that our models could benefit from adding the interaction between each pair of instances, as two people will more probably match if they have many interests in common.
+
+However, adding feature interactions further increases the dimensionality of our problem, raising the number of features to __279__. For this reason, we decided to include the possibility to drop the original features, and keep only their interactions. As a consequence, the dimensionality of our model drops to __93__.
+
+### Fighting the curse of dimensionality
+As we are dealing with a high dimensional dataset, we have to take precautions against the curse of dimensionality. To do so, we choose models which are not based on the notions of distance and similarity, such as Random Forest, Support Vector Machine and Logistic Regression. Furthermore, we try to apply k-Nearest Neighbors, to check if it performs worse as expected.
+
+Moreover, we consider PCA as a preprocessing step. First, we use PCA to get the list of features and plot which ones have the most explanatory power, or have the most variance. Then, we compute how many features explains the 90-95% of our dataset. We repeat the same procedure for the dataset with feature interaction (with and without drop). Results are shown in the table below.
+
+![Principal components, no interactions](/images/pca_no_int.png "Principal components, no interactions")
+
+| Preprocessing | 90 % | 95 % | 100 %|
+|---------------|:----:|:----:|:----:|
+|_None_|104|124|186|
+|Interactions, no drop|136|163|279|
+|Interactions and drop|58|65|93|
+
+Finally, we used such values as number of component for the PCA algorithm.
+
 ### The imbalance problem
-- using stratified split
-- using oversampling
-- using appropriate metrics 
-
-TODO
-### FIghting the curse of dimensionality
-- using appropriate algorithms (and bad ones to see if they are acutally bad)
-- using PCA
-
-TODO
-
-## Models / Methodology
-In order to face the classification task, our choices in terms of methodology have so far been the following: 
-- The k-Nearest Neighbors algorithm  
-- Logistic Regression  
-- Support Vector Machines  
-
-To avoid problems such as overfitting in the training of these algorithms, we decided to employ k-fold cross validation starting from an experimental amount of two folds. Moreover, we applied grid search for the optimization of our model's hyperparameters.  
-
-Given the dataset's heavy unbalance, we opted against accuracy as a metric to evaluate the chosen models. Instead, it seemed preferable to pick alternatives such as:  
+As we already noticed, our dataset is heavily imbalanced. As a consequence, we opt against accuracy as a metric to evaluate our models, as it can be misleading when dealing with such datasets. Instead, we prefer to pick alternatives such as:  
 - Balanced Accuracy  
 - F1-Score  
-- Recall  
+- Recall
 
-Furthermore, we attempted to manage such unbalance by making use of a Stratisfied Split for the generation of the training and testing sets.  
-This problem, together with the very high number of features in our dataset, caused us to observe some bad performances in the testing of the three algorithms (e.g., in the convergence of the Logistic Regression function). We plan to face these issues by further investigation the relations among some features as well as in the ways indicated in the next section.
+We choose 'recall' as main metric, since we want our models to detect as much 'match' samples as possible.
+
+Furthermore, we make use of a Stratisfied Split for the generation of the training, validation and testing sets:  we ensure that each fold has the same proportion of observations no match/match.
+
+However, these measures are not enough to obtain acceptable results from our models. For this reason, we consider to apply SMOTE, an over-sampling technique which adds synthetic points to the minority class.
+
+## Models
+In order to face the classification task, our choices in terms of models have so far been the following:   
+- Random Forest
+- k-Nearest Neighbor (for comparison purposes only) 
+- _Logistic Regression [work in progress]_  
+- _Support Vector Machine [work in progress]_ 
+
+kNN performs poorly as expected, even when applying PCA with interactions and drop, while Random Forest is the most promising classifier, with a recall of 0.7 and a balanced accuracy of 0.82.
+
+Finally, since our datset is both highly imbalanced and dimensional, we observed very bad performances in optimization-based algorithms (LR and SVM), as they fail to converge. We plan to face these issues by further investigating the relations among some features as well as in the ways indicated in the next section.
 
 ## Next steps
-- cost-based training
-- more severe feature selection
-- bias-value decomposition to see why the models are bad
-- try more interactions
-- try more algorithms
+- Try new models, and different over-sampling techniques
+- Enhance the feature interactions function, by considering different combinations of features, and proposing new feature engineering ideas knowing the features meaning in our scenario
+- Modify the pipeline to support cost-sensitive training (to reduce the impact of class imbalance)
+- Implement an automatic feature selection algorithm
+- Implement bias-value decomposition, to better analyse our models' performance
 
 ## Contribution
-- Marco Cavenati: dataset analysis and features reduction.
+- Marco Cavenati: dataset analysis, cleaning and features selection.
 - Mayank Narang: implementation of the algorithms.
-- Ilaria Pilo: preparation of the data functions (i.e., train/validation/test split), model evaluation.
+- Ilaria Pilo: data split and preprocessing, k-fold and grid search wrappers, training pipeline definition.
 
 ## References
+1. [10 Techniques to deal with Imbalanced Classes in Machine Learning](https://www.analyticsvidhya.com/blog/2020/07/10-techniques-to-deal-with-class-imbalance-in-machine-learning/)
+2. [imbalanced-learn documentation](https://imbalanced-learn.org/stable/index.html)
+3. [scikit-learn documentation](https://scikit-learn.org/stable/index.html)
