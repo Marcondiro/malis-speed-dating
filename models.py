@@ -17,7 +17,8 @@ from sklearn.ensemble import RandomForestClassifier # to perform RandomForest
 from sklearn.svm import SVC  # to perform SVM classification
 from sklearn.decomposition import PCA
 from sklearn.preprocessing import StandardScaler
-from sklearn.pipeline import Pipeline
+from imblearn.pipeline import Pipeline
+from imblearn.over_sampling import SMOTE
 
 def knn():
     k_min = 1
@@ -32,7 +33,7 @@ def knn():
 
 
 def logistic_regression():
-    max_iter = 250000  # maximum number of iterations
+    max_iter = 250000000  # maximum number of iterations
     
     # C = inverse of regularization strength (smaller = stronger regularization)
     lr = LogisticRegression(solver='newton-cg', max_iter=max_iter)
@@ -57,8 +58,17 @@ def svm():
 def random_forest():
 
     rf = RandomForestClassifier()
+    """
     grid = {
-        'min_samples_split': [2, 5]
+        'n_estimators': [200, 500], 
+        'max_features': ['auto', 'sqrt', 'log2'], 
+        'max_depth': [4, 5, 6, 7, 8], 
+        'criterion': ['gini', 'entropy']
+    }
+    """
+    grid = {
+        'min_samples_split': [2, 5],
+        'n_estimators': [200, 500]
     }
 
     return rf, grid
@@ -129,5 +139,22 @@ def pca(n_components, model_f):
     # update the grid
     grid = {f"model__{key}": val for key, val in grid.items()}
     grid['pca__n_components'] = n_components
+
+    return pipe, grid
+
+
+def over_sampling(estimator_f, **params):
+
+    estimator, grid = estimator_f(**params)
+    smote = SMOTE()
+    # if estimator is a pipeline
+    if estimator.__class__.__name__ == 'Pipeline':
+        pipe = estimator
+        pipe.steps.insert(0,['over_sampler', smote])
+    else:
+        # create the pipeline
+        pipe = Pipeline(steps=[('over_sampler', smote), ('model', estimator)])
+        # update the grid
+        grid = {f"model__{key}": val for key, val in grid.items()}
 
     return pipe, grid
