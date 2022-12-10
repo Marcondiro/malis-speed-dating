@@ -1,10 +1,10 @@
-- [ ] Dataset analysis @Marco
-    - [ ] Features description (including domain)
-    - [ ] Reload data with sensible dataformat ?
-    - [ ] Find useless features
-    - [ ] Remove features not retrievable by the app
-    - [ ] Map textual fields into categorical features
-    - [ ] Produce a dataframe as output
+- [x] Dataset analysis @Marco
+    - [x] Features description (including domain)
+    - [x] Reload data with sensible dataformat ?
+    - [x] Find useless features
+    - [x] Remove features not retrievable by the app
+    - [x] Map textual fields into categorical features
+    - [x] Produce a dataframe as output
 
 - [ ] Prediction
     - [ ] Prepare data function (train/validation/test split) @Ilaria
@@ -15,3 +15,21 @@
         - [ ] svm
 
 - [ ] Understand how to handle imbalance in the dataset @All
+- [ ] Write how we will manage missing categories in the dataset when will implement the model
+- [ ] Choose the portion for th TVT split
+
+- [ ] Update report
+    - [ ] Motivation @Ilaria
+    - [ ] Dataset_analysys stuff @Marco
+        - [ ] 1-hot en @Ilaria
+    - [ ] Methods @Mayank
+        - [ ] Say that we use K-fold + grid search
+        - [ ] Used metrics
+        - [ ] Unbalance management (no accuracy, other metrics... Stratified stuff)
+        - [ ] Bad performance and link to next steps for the resolutions
+    - [ ] Next steps @Ilaria
+        - [ ] Other ML techniques
+        - [ ] Unbalance management (Oversampling, point 2, 8 ,9 ilaria link)
+        - [ ] Data trasformation
+            - [ ] interactions between same cols and with all cols
+    - [ ] Contributions @Mayank
