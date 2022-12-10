@@ -11,7 +11,8 @@ All methods in the models.py file return a classifier and a grid dictionary.
 """
 
 from sklearn.neighbors import KNeighborsClassifier  # to perform kNN
-from sklearn.linear_model import LogisticRegression  # to perform logistic regression
+from sklearn.linear_model import LogisticRegression # to perform logistic regression
+from sklearn.ensemble import RandomForestClassifier # to perform RandomForest 
 from sklearn.svm import SVC  # to perform SVM classification
 
 def knn():
@@ -50,4 +51,10 @@ def svm():
 
 
 def random_forest():
-    return
+
+    rf = RandomForestClassifier()
+    grid = {
+        'min_samples_split': [2, 5]
+    }
+
+    return rf, grid

@@ -15,3 +15,7 @@ cosette del preprocessing
 
 ## Models / Methodology
 FIXME e che ne so?
+
+## Contribution
+
+## References
