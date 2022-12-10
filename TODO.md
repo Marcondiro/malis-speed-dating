@@ -8,8 +8,8 @@
     - [x] Produce a dataframe as output
 
 - [ ] Prediction
-    - [ ] Prepare data function (train/validation/test split) @Ilaria
-    - [ ] Evaluate model function @Ilaria
+    - [x] Prepare data function (train/validation/test split) @Ilaria
+    - [x] Evaluate model function @Ilaria
     - [ ] Algorithms @Mayank
         - [ ] k-nn
         - [ ] logistic regression
@@ -31,6 +31,6 @@
     - [ ] Next steps @Ilaria
         - [ ] Other ML techniques
         - [ ] Unbalance management (Oversampling, point 2, 8 ,9 ilaria link)
-        - [ ] Data trasformation
-            - [ ] interactions between same cols and with all cols
+        - [x] Data trasformation
+            - [x] interactions between same cols and with all cols
     - [ ] Contributions @Mayank

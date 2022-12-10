@@ -68,7 +68,7 @@ def split_dataset(X, y, test=0.3, stratify=True):
     
     # split it into train and test set
     stratify = (y if stratify else None)
-    X_tr, X_te, y_tr, y_te = train_test_split(X, y, test_size=test, stratify=stratify)
+    X_tr, X_te, y_tr, y_te = train_test_split(X, y, test_size=test, stratify=stratify, random_state=42)
 
     return X_tr, y_tr, X_te, y_te
 
