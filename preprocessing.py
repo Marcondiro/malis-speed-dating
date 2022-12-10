@@ -8,6 +8,9 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.model_selection import GridSearchCV
 import models
+import numpy as np
+import pandas as pd
+import re
 
 
 def load_dataset(dataset_file):
@@ -75,7 +78,8 @@ def grid_search(X, y, model, grid, k=5):
 
     """
     Perform grid search on the provided model.
-        Parameters
+
+    Parameters
     ----------
     X: DataFrame
         The dataset samples
@@ -128,6 +132,44 @@ def grid_search(X, y, model, grid, k=5):
     return out
 
 
+def interactions(X, drop=False):
+    """
+    Compute the interactions for the DataFrame X, using the following logic:
+        col <- col_x * col_y
+
+    Parameters
+    ----------
+    X: DataFrame
+        The dataset samples
+    drop: bool, optional (default is False)
+        When True, we drop col_x and col_y, leaving just their interaction col
+
+    Returns
+    -------
+    DataFrame
+        The modified dataset
+
+    """
+    # add interaction x-y
+    columns = list(X.columns)
+    re_x = re.compile(".*_x.*")
+    re_y = re.compile(".*_y.*")
+    re_sub = re.compile("_x")
+    pairs = [[c for c in columns if re_x.match(c)],
+        [c for c in columns if re_y.match(c)], 
+        [re.sub(re_sub, '', c) for c in columns if re_x.match(c)]
+    ]
+    pairs = [['angles_x'], ['angles_y'], ['angles']]
+
+    X[pairs[2]] = np.multiply(X[pairs[0]], np.asarray(X[pairs[1]]))
+    
+    # drop the other columns, if necessary
+    if drop:
+        X.drop(pairs[0]+pairs[1], axis='columns', inplace=True)
+
+    return X
+
+
 
 ##########################################
 #                                        #
@@ -136,7 +178,10 @@ def grid_search(X, y, model, grid, k=5):
 ##########################################
 test_size = 0.2         # the ratio of the dataset we want to use as test set
 stratify = True         # Whether we want the split to keep the same proportion between classes as the original dataset
-k = 2                  # The number of folds for the stratified k fold 
+k = 2                   # The number of folds for the stratified k fold
+
+interaction=True        # Whether we want to compute the interaction
+drop=True               # Whether we want to drop the original features
 
 model_f = models.logistic_regression    # The model we want to use
 
@@ -145,8 +190,10 @@ if __name__ == "__main__":
 
     # first, we load the dataset
     X, y = load_dataset('./data/data.pkl')
-        # first, we load the dataset
-    X, y = load_dataset('./data/data.pkl')
+    
+    if interaction:
+        X = interactions(X, drop)
+
     # then, we split it
     X_tr, y_tr, X_te, y_te = split_dataset(X, y, test=test_size, stratify=stratify)
     # get the grid and the model
