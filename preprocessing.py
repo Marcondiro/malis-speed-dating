@@ -74,10 +74,10 @@ def split_dataset(X, y, test=0.3, stratify=True):
 
 
 
-def grid_search(X, y, model, grid, k=5):
+def grid_search(X, y, estimator, grid, k=5):
 
     """
-    Perform grid search on the provided model.
+    Perform grid search on the provided model/pipe.
 
     Parameters
     ----------
@@ -85,8 +85,8 @@ def grid_search(X, y, model, grid, k=5):
         The dataset samples
     y: DataFrame
         The corresponding labels
-    model:
-        The sklearn model we want to apply
+    estimator:
+        The sklearn model/pipe we want to apply
     grid: dictionary
         The grid of hyperparameters we want to test for our model 
     k: int, optional (default is 5)
@@ -113,7 +113,7 @@ def grid_search(X, y, model, grid, k=5):
     best_metric = 'recall'
 
     # create the GridSearchCV object
-    grid_cv = GridSearchCV(model, param_grid=grid, cv=k, scoring=metrics, refit=best_metric)
+    grid_cv = GridSearchCV(estimator, param_grid=grid, cv=k, scoring=metrics, refit=best_metric)
     # run the grid search
     res = grid_cv.fit(X, y)
 
