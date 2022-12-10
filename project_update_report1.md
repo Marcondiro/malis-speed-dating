@@ -88,7 +88,15 @@ TODO
 TODO
 
 ## Models / Methodology
-FIXME e che ne so?
+In order to face the classification task, our choices in terms of methodology have so far been the following: 
+- The k-Nearest Neighbors algorithm  
+- Logistic Regression  
+- Support Vector Machines  
+
+To avoid problems such as overfitting in the training of these algorithms, we decided to employ k-fold cross validation starting from an experimental amount of two folds. Moreover, we applied grid search for the optimization of our model's hyperparameters.  
+
+Given the dataset's heavy unbalance, we opted against accuracy as a metric to evaluate the chosen models. Instead, it seemed preferable to pick alternatives such as Balanced Accuracy, F1-Score and Recall. Furthermore, we attempted to manage this unbalance by making use of a Stratisfied Split for the generation of the training and testing sets.  
+This problem, together with the very high number of features in our dataset, caused us to observe some bad performances in the testing of the three algorithms (e.g., in the convergence of the Logistic Regression function). We plan to face these issues by further investigation the relations among some features as well as in the ways indicated in the next section.
 
 ## Next steps
 - cost-based training
@@ -98,5 +106,8 @@ FIXME e che ne so?
 - try more algorithms
 
 ## Contribution
+- Marco Cavenati: dataset analysis and features reduction.
+- Mayank Narang: implementation of the algorithms.
+- Ilaria Pilo: preparation of the data functions (i.e., train/validation/test split), model evaluation.
 
 ## References
