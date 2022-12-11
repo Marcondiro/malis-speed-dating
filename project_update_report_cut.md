@@ -12,7 +12,7 @@ We are using the [Speed Dating | Kaggle](https://www.kaggle.com/datasets/whenama
 
 ### Cleaning the dataset
 The two biggest and time consuming issues faced with the dataset were:
-1. Analyse and understand the semantics of the couluns to understand if the same feature could be retreived in the dating app context in the registration phase.
+1. Analyse and understand the semantics of the columns to understand if the same feature could be retrieved in the dating app context in the registration phase.
 2. Manage the inconsistency between the survey methodologies used in the different waves of the event.
 
 After the selection process, only 57 features are left. Here, we describe some of them:
