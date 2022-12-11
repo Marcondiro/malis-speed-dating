@@ -103,12 +103,12 @@ To tackle the second problem, we remove from the dataset the data collected with
 
 After completing the cleaning procedure, we obtain 3982 "No match" samples and 736 "match" samples.
 
-![Count of 'match' records](/images/count_of_match.png "Count of 'match' records")
+<img src="./images/count_of_match.png" alt="Count of 'match' records" width="60%" style="display: block; margin-right: auto; margin-left: auto;">
 
 ### Reshaping the dataset
-Then, we reshape the data into a suitable form for the ML algorithms. We also tried to minimize the memory requirements by choosing optimal datatypes.
+Then, we reshape the data into a suitable form for the ML algorithms. We also minimize the memory requirements by choosing optimal datatypes.
 In particular, we use the `iid` and `pid` fields to join the dataframe with itself, in this way in each record there are all the answers of the person and all the answers of the partner.
-Then we drop the `iid` and `pid` fields.
+Finally, we drop the `iid` and `pid` fields.
 
 ### Applying one hot encoding
 Since the dataset contains a vast majority of categorical features, we have to choose the proper encoding for each of them. In particular, we observe two different cases:
@@ -152,7 +152,7 @@ As we are dealing with a high dimensional dataset, we have to take precautions a
 
 Moreover, we consider PCA as a preprocessing step. First, we use PCA to get the list of features and plot which ones have the most explanatory power, or have the most variance. Then, we compute how many features explains the 90-95% of our dataset. We repeat the same procedure for the dataset with feature interaction (with and without drop). Results are shown in the table below.
 
-![Principal components, no interactions](/images/pca_no_int.png "Principal components, no interactions")
+![Principal components, no interactions](./images/pca_no_int.png "Principal components, no interactions")
 
 | Preprocessing | 90 % | 95 % | 100 %|
 |---------------|:----:|:----:|:----:|
@@ -181,16 +181,21 @@ In order to face the classification task, our choices in terms of models have so
 - _Logistic Regression [work in progress]_  
 - _Support Vector Machine [work in progress]_ 
 
-kNN performs poorly as expected, even when applying PCA with interactions and drop, while Random Forest is the most promising classifier, with a recall of 0.7 and a balanced accuracy of 0.82.
+Surprisingly enough, KNN performs quite good, as long as we apply feature scaling and we choose k = 1. Both PCA and SMOTE does not seem to have a significant impact on our results.
+
+![kNN, results comparison (only scaling)](./images/knn.png "kNN, results comparison (only scaling)")
+
+Random Forest with SMOTE preprocessing returns similar results, with a recall of 0.7 and a balanced accuracy of 0.82.
 
 Finally, since our datset is both highly imbalanced and dimensional, we observed very bad performances in optimization-based algorithms (LR and SVM), as they fail to converge. We plan to face these issues by further investigating the relations among some features as well as in the ways indicated in the next section.
 
 ## Next steps
+- Complete LR and SVM implementation
 - Try new models, and different over-sampling techniques
 - Enhance the feature interactions function, by considering different combinations of features, and proposing new feature engineering ideas knowing the features meaning in our scenario
-- Modify the pipeline to support cost-sensitive training (to reduce the impact of class imbalance)
+- Modify the pipeline to support cost-sensitive training (to further reduce the impact of class imbalance)
 - Implement an automatic feature selection algorithm
-- Implement bias-value decomposition, to better analyse our models' performance
+- Implement bias-value decomposition, to better understand our models' performance
 
 ## Contribution
 - Marco Cavenati: dataset analysis, cleaning and features selection.
