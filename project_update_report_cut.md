@@ -56,7 +56,7 @@ In our dataset each column is present in two separate instances, one for each me
 However, adding feature interactions further increases the dimensionality of our problem, raising the number of features to __279__. For this reason, we decided to include the possibility to drop the original features and keep only their interactions. As a consequence, the dimensionality of our model drops to __93__.
 
 ### Fighting the curse of dimensionality
-As we are dealing with a high dimensional dataset, we have to take precautions against the curse of dimensionality. To do so, we choose models which are not based on the notions of distance and similarity, such as Random Forest, Support Vector Machine and Logistic Regression. Furthermore, we try to apply k-Nearest Neighbors, as a baseline reference.
+As we are dealing with a high dimensional dataset, we have to take precautions against the curse of dimensionality. To do so, we choose models which are not based on the notions of distance and similarity, such as Random Forest, Support Vector Machine and Logistic Regression. Furthermore, we try to apply k-Nearest Neighbors, as a baseline reference (we expect other models to achieve a better performance).
 
 Moreover, we consider PCA as a preprocessing step. First, we use PCA to compute how many features explains the 90-95% of our dataset. We repeat the same procedure for the dataset with feature interaction (with and without drop). Finally, we use the obtained results as number of components for the PCA algorithm.
 
@@ -67,7 +67,7 @@ Furthermore, we make use of a __Stratisfied Split__ for the generation of the tr
 
 However, these measures are not enough to obtain acceptable results from our models. For this reason, we consider applying SMOTE, an over-sampling technique which adds synthetic points to the minority class.
 
-## Models
+## Models and experiments
 In order to face the classification task, our choices in terms of models have so far been the following:   
 - Random Forest
 - k-Nearest Neighbor (for comparison purposes only) 
@@ -79,10 +79,10 @@ Surprisingly enough, KNN performs decently (recall = 0.7, balanced accuracy = 0.
 Finally, since our dataset is both highly imbalanced and dimensional, we observed very bad performances in optimization-based algorithms (LR and SVM), as they fail to converge. We plan to face these issues by further investigating the relations among some features as well as in the ways indicated in the next section.
 
 ## Next steps
-- Complete LR and SVM implementation; try new models, and different over-sampling techniques
-- Enhance the feature interactions function, by considering different combinations of features, and proposing new feature engineering ideas knowing the features meaning in our scenario
-- Modify the pipeline to support cost-sensitive training (to further reduce the impact of class imbalance)
-- Implement bias-value decomposition, to better understand our models' performance
+- Complete LR and SVM implementation; try new models, and different over-sampling techniques.
+- Enhance the feature interactions function, by considering different combinations of features, and proposing new feature engineering ideas knowing the features meaning in our scenario.
+- Modify the pipeline to support cost-sensitive training (to further reduce the impact of class imbalance).
+- Implement bias-value decomposition, to better understand our models' performance.
 
 ## Contribution
 - Marco Cavenati: dataset analysis, cleaning, reshape and features selection.
