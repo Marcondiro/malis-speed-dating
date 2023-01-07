@@ -35,3 +35,13 @@
         - [x] Data trasformation
             - [x] interactions between same cols and with all cols
     - [ ] Contributions @Mayank
+
+- [ ] isolation forest @Ilaria
+- [ ] gmm @Ilaria
+- [ ] LR review @Marco
+- [ ] Other oversampling techniques @Mayank
+- [ ] test new features mapping ? @Marco
+- [ ] polynomial features @Marco
+- [ ] follow Maria's notes while writing final report
+- [ ] cost sensitive training @Mayank
+- [ ] implement bias-variance decomposition print
