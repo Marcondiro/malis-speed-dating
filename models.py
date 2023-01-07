@@ -38,7 +38,7 @@ def logistic_regression():
     MAX_ITER = 250000000  # maximum number of iterations
 
     # C = inverse of regularization strength (smaller = stronger regularization)
-    lr = LogisticRegression(solver='newton-cg', max_iter=MAX_ITER)
+    lr = LogisticRegression(solver='newton-cg', max_iter=MAX_ITER, class_weight='balanced')
     grid = {
         'C': [10, 100, 10000]
     }
@@ -49,7 +49,7 @@ def logistic_regression():
 def svm():
     MAX_ITER = 25000  # maximum number of iterations
 
-    clf = SVC(max_iter=MAX_ITER)
+    clf = SVC(max_iter=MAX_ITER, class_weight='balanced')
     grid = {
         'kernel': ['linear', 'rbf']
     }
@@ -59,7 +59,7 @@ def svm():
 
 def random_forest():
 
-    rf = RandomForestClassifier(max_features="sqrt", bootstrap=True, oob_score=True)
+    rf = RandomForestClassifier(max_features="sqrt", bootstrap=True, oob_score=True, class_weight='balanced')
     """
     grid = {
         'n_estimators': [200, 500], 
