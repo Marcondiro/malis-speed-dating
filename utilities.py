@@ -58,9 +58,9 @@ def plot_grid_results(grid_out, model_name):
     plt.show()
 
 
-def print_log(grid_out):
-    print("Best model (according to recall): " + str(grid_out['best_params']))
+def print_log(out, is_grid=True):
+    is_grid and print("Best model (according to recall): " + str(out['best_params']))
     print('-----------------------------------------')
-    print("Recall : " + str(grid_out['best_recall']))
-    print("Balanced accuracy: " + str(grid_out['best_balanced_accuracy']))
-    print("f1: " + str(grid_out['best_f1']))
+    print("Recall : " + str(out['best_recall']))
+    print("Balanced accuracy: " + str(out['best_balanced_accuracy']))
+    print("f1: " + str(out['best_f1']))

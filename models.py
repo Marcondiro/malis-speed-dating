@@ -59,7 +59,7 @@ def svm():
 
 def random_forest():
 
-    rf = RandomForestClassifier()
+    rf = RandomForestClassifier(max_features="sqrt", bootstrap=True, oob_score=True)
     """
     grid = {
         'n_estimators': [200, 500], 
@@ -70,10 +70,12 @@ def random_forest():
     """
     grid = {
         'min_samples_split': [2, 5],
-        'n_estimators': [200, 500]
+        'n_estimators': [100, 200],
+        'criterion': ['gini', 'entropy']
     }
 
     return rf, grid
+
 
 
 #########################################
