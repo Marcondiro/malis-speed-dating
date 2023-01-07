@@ -56,3 +56,11 @@ def plot_grid_results(grid_out, model_name):
 
     fig.tight_layout()
     plt.show()
+
+
+def print_log(grid_out):
+    print("Best model (according to recall): " + str(grid_out['best_params']))
+    print('-----------------------------------------')
+    print("Recall : " + str(grid_out['best_recall']))
+    print("Balanced accuracy: " + str(grid_out['best_balanced_accuracy']))
+    print("f1: " + str(grid_out['best_f1']))
