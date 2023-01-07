@@ -73,6 +73,46 @@ def split_dataset(X, y, test=0.3, stratify=True):
     return X_tr, y_tr, X_te, y_te
 
 
+def split_train_test_validation(X, y, test=0.1, val=0.1, stratify=True):
+    """
+    A function splitting a dataset into train, test and validation sets.
+
+    Parameters
+    ----------
+    X: DataFrame
+        The dataset samples
+    y: DataFrame
+        The corresponding labels
+    test: float, optional (default is 0.1)
+        The fraction of the dataset we want to keep as test set
+    val: float, optional (default is 0.1)
+        The fraction of the dataset we want to keep as validation set
+    stratify: bool, optional (default is True)
+        Whether we want the split to keep the same proportion between classes as the original dataset
+
+    Returns
+    -------
+    X_tr, y_tr
+        Samples and relative labels for the training set
+    X_te, y_te
+        Samples and relative labels for the test set
+    X_val, y_val
+        Samples and relative labels for the validation set
+
+    """
+    
+    # split it into train and test set
+    stratify_ = (y if stratify else None)
+    # first, split into train + validation and test set
+    X_tr, X_te, y_tr, y_te = train_test_split(X, y, test_size=test, stratify=stratify_, random_state=42)
+    # then, split train + validation into train and validation
+    val = val/(1-test)
+    stratify_ = (y_tr if stratify else None)
+    X_tr, X_val, y_tr, y_val = train_test_split(X_tr, y_tr, test_size=val, stratify=stratify_, random_state=69)
+
+    return X_tr, y_tr, X_te, y_te, X_val, y_val
+
+
 
 def grid_search(X, y, estimator, grid, k=5):
 
@@ -159,14 +199,16 @@ def interactions(X, drop=False):
         [c for c in columns if re_y.match(c)], 
         [re.sub(re_sub, '', c) for c in columns if re_x.match(c)]
     ]
+    # copy the dataset
+    X_ = X.copy()
 
-    X[pairs[2]] = np.multiply(X[pairs[0]], np.asarray(X[pairs[1]]))
+    X_[pairs[2]] = np.multiply(X[pairs[0]], np.asarray(X[pairs[1]]))
     
     # drop the other columns, if necessary
     if drop:
-        X.drop(pairs[0]+pairs[1], axis='columns', inplace=True)
+        X_ = X_.drop(pairs[0]+pairs[1], axis='columns', inplace=False)
 
-    return X
+    return X_
 
 
 
