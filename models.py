@@ -14,7 +14,7 @@ All methods in the models.py file return a classifier and a grid dictionary.
 from sklearn.neighbors import KNeighborsClassifier  # to perform kNN
 # to perform logistic regression
 from sklearn.linear_model import LogisticRegression
-from sklearn.ensemble import RandomForestClassifier  # to perform RandomForest
+from sklearn.ensemble import RandomForestClassifier, GradientBoostingClassifier  # to perform RandomForest
 from sklearn.svm import SVC  # to perform SVM classification
 from sklearn.decomposition import PCA
 from sklearn.preprocessing import StandardScaler
@@ -77,6 +77,19 @@ def random_forest():
     }
 
     return rf, grid
+
+
+def gradient_boosting():
+
+    gb = GradientBoostingClassifier(n_estimators=500)
+
+    grid = {
+        'learning_rate': [0.1, 0.05],
+        'max_depth': [5, 8],
+        'min_samples_split': [6]
+    }
+
+    return gb, grid
 
 
 
