@@ -20,6 +20,8 @@ from sklearn.decomposition import PCA
 from sklearn.preprocessing import StandardScaler
 from imblearn.pipeline import Pipeline
 from imblearn.over_sampling import SMOTE
+from imblearn.over_sampling import ADASYN
+from imblearn.over_sampling import RandomOverSampler
 
 
 def knn():
@@ -150,14 +152,18 @@ def pca(n_components, model_f):
 def over_sampling(estimator_f, **params):
 
     estimator, grid = estimator_f(**params)
-    smote = SMOTE()
+    
+    # Oversampler
+    over_samplers = [SMOTE(), ADASYN(), RandomOverSampler()]
+    over_sampler = over_samplers[0]
+    
     # if estimator is a pipeline
     if estimator.__class__.__name__ == 'Pipeline':
         pipe = estimator
-        pipe.steps.insert(0, ['over_sampler', smote])
+        pipe.steps.insert(0, ['over_sampler', over_sampler])
     else:
         # create the pipeline
-        pipe = Pipeline(steps=[('over_sampler', smote), ('model', estimator)])
+        pipe = Pipeline(steps=[('over_sampler', over_sampler), ('model', estimator)])
         # update the grid
         grid = {f"model__{key}": val for key, val in grid.items()}
 
