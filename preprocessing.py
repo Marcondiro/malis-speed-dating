@@ -1,13 +1,7 @@
-##########################################
-#                                        #
-#           DATA PREPROCESSING           #
-#                                        #
-##########################################
-
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.model_selection import GridSearchCV
-import models
+from sklearn.preprocessing import PolynomialFeatures
 import numpy as np
 import pandas as pd
 import re
@@ -173,7 +167,12 @@ def grid_search(X, y, estimator, grid, k=5):
     return out
 
 
-def interactions(X, drop=False):
+def feature_interaction_polynomyal_degreee2(X):
+    poly = PolynomialFeatures(2, interaction_only=True)
+    return poly.fit_transform(X)
+
+
+def corresponding_features_interaction(X, drop=False):
     """
     Compute the interactions for the DataFrame X, using the following logic:
         col <- col_x * col_y
@@ -203,7 +202,52 @@ def interactions(X, drop=False):
     # copy the dataset
     X_ = X.copy()
 
-    # X_[pairs[2]] = np.multiply(X[pairs[0]], np.asarray(X[pairs[1]]))
+    X_[pairs[2]] = np.multiply(X[pairs[0]], np.asarray(X[pairs[1]]))
+
+    # drop the other columns, if necessary
+    if drop:
+        X_ = X_.drop(pairs[0]+pairs[1], axis='columns', inplace=False)
+
+    return X_
+
+
+def corresponding_features_custom_interaction(X, drop=False):
+    """
+    Compute the interactions for the DataFrame X, using the following logic:
+    For binary features
+    a = b = 1 -> 2
+    a = b = 0 -> 1
+    a != b    -> 0
+
+    For integer features
+    a>6 and b>6 -> 6 + abs(a-b)
+    else -> 10 + abs(a-b)
+
+    Parameters
+    ----------
+    X: DataFrame
+        The dataset samples
+    drop: bool, optional (default is False)
+        When True, we drop col_x and col_y, leaving just their interaction col
+
+    Returns
+    -------
+    DataFrame
+        The modified dataset
+
+    """
+    # add interaction x-y
+    columns = list(X.columns)
+    re_x = re.compile(".*_x")
+    re_y = re.compile(".*_y")
+    re_sub = re.compile("_x")
+    pairs = [[c for c in columns if re_x.match(c)],
+             [c for c in columns if re_y.match(c)],
+             [re.sub(re_sub, '', c) for c in columns if re_x.match(c)]
+             ]
+
+    # copy the dataset
+    X_ = X.copy()
 
     for i in range(len(pairs[0])):
         if is_binary(X[pairs[0][i]]):
@@ -231,39 +275,8 @@ def binary_feature_custom_interaction(a: np.array, b: np.array) -> np.array:
 
 
 def integer_feature_custom_interaction(a, b) -> np.array:
-    result = np.max([a,b], axis=0) - np.min([a,b], axis=0) # absolute difference
+    result = np.max([a, b], axis=0) - np.min([a, b],
+                                             axis=0)  # absolute difference
     # Shared high interest, give more importance
     result += 10 - np.logical_and(a > 6, b > 6) * 4
     return result
-
-    ##########################################
-    #                                        #
-    #               PARAMETERS               #
-    #                                        #
-    ##########################################
-test_size = 0.2         # the ratio of the dataset we want to use as test set
-# Whether we want the split to keep the same proportion between classes as the original dataset
-stratify = True
-k = 2                   # The number of folds for the stratified k fold
-
-interaction = True        # Whether we want to compute the interaction
-drop = True               # Whether we want to drop the original features
-
-model_f = models.logistic_regression    # The model we want to use
-
-
-if __name__ == "__main__":
-
-    # first, we load the dataset
-    X, y = load_dataset('./data/data.pkl')
-
-    if interaction:
-        X = interactions(X, drop)
-
-    # then, we split it
-    X_tr, y_tr, X_te, y_te = split_dataset(
-        X, y, test=test_size, stratify=stratify)
-    # get the grid and the model
-    model, grid = model_f()
-    # call grid_search
-    out = grid_search(X_tr, y_tr, model, grid, k)
