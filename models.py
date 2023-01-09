@@ -30,7 +30,8 @@ def knn():
 
     knn = KNeighborsClassifier()
     grid = {
-        'n_neighbors': list(range(K_MIN, K_MAX+1))
+        'n_neighbors': list(range(K_MIN, K_MAX+1)),
+        'weights': ['uniform', 'distance']
     }
 
     return knn, grid
