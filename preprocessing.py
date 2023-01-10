@@ -122,7 +122,7 @@ def grid_search(X, y, estimator, grid, k=5):
     estimator:
         The sklearn model/pipe we want to apply
     grid: dictionary
-        The grid of hyperparameters we want to test for our model 
+        The grid of hyperparameters we want to test for our model
     k: int, optional (default is 5)
         The number of folds for the k-fold validation approach
 
@@ -236,31 +236,25 @@ def corresponding_features_custom_interaction(X, drop=False):
         The modified dataset
 
     """
-    # add interaction x-y
-    columns = list(X.columns)
-    re_x = re.compile(".*_x")
-    re_y = re.compile(".*_y")
-    re_sub = re.compile("_x")
-    pairs = [[c for c in columns if re_x.match(c)],
-             [c for c in columns if re_y.match(c)],
-             [re.sub(re_sub, '', c) for c in columns if re_x.match(c)]
-             ]
-
     # copy the dataset
-    X_ = X.copy()
+    data = X.copy()
 
-    for i in range(len(pairs[0])):
-        if is_binary(X[pairs[0][i]]):
-            X_[pairs[2][i]] = binary_feature_custom_interaction(
-                X[pairs[0][i]], X[pairs[1][i]])
-        else:
-            X_[pairs[2][i]] = integer_feature_custom_interaction(
-                X[pairs[0][i]], X[pairs[1][i]])
-    # drop the other columns, if necessary
-    if drop:
-        X_ = X_.drop(pairs[0]+pairs[1], axis='columns', inplace=False)
+    cols = ['sports', 'tvsports', 'exercise', 'dining', 'museums',
+            'art', 'hiking', 'gaming', 'clubbing',
+            'reading', 'tv', 'theater', 'movies',
+            'concerts', 'music', 'shopping', 'yoga', ]
+    regex = re.compile("(field_cd|race|goal|career_c|sports)_[0-9]*_x")
+    cols += [c[:-2] for c in X.columns if regex.match(c)]
 
-    return X_
+    for c in cols:
+        data[c] = binary_feature_custom_interaction(X[c + '_x'], X[c + '_y']) if is_binary(X[c + '_x'])\
+            else integer_feature_custom_interaction(X[c + '_x'], X[c + '_y'])
+
+        # drop the other columns, if necessary
+        if drop:
+            data.drop([c + '_x', c + '_y'], axis='columns', inplace=True)
+
+    return data
 
 
 def is_binary(feature) -> bool:
