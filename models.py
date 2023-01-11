@@ -23,6 +23,8 @@ from imblearn.over_sampling import SMOTE
 from imblearn.over_sampling import ADASYN
 from imblearn.over_sampling import RandomOverSampler
 
+from gmm import GMM
+
 
 def knn():
     K_MIN = 1
@@ -91,6 +93,18 @@ def gradient_boosting():
     }
 
     return gb, grid
+
+
+def gmm():
+
+    gmm_model = GMM(pi='auto')
+
+    grid = {
+        'n_components': [1,2,4,8,16],
+        'covariance_type': ['full', 'tied', 'diag']
+    }
+
+    return gmm_model, grid
 
 
 
