@@ -243,7 +243,7 @@ def corresponding_features_custom_interaction(X, drop=False):
             'art', 'hiking', 'gaming', 'clubbing',
             'reading', 'tv', 'theater', 'movies',
             'concerts', 'music', 'shopping', 'yoga', ]
-    regex = re.compile("(field_cd|race|goal|career_c|sports)_[0-9]*_x")
+    regex = re.compile("(field_cd|race|goal|career_c)_[0-9]*_x")
     cols += [c[:-2] for c in X.columns if regex.match(c)]
 
     for c in cols:
