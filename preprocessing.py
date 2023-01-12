@@ -262,15 +262,15 @@ def is_binary(feature) -> bool:
 
 
 def binary_feature_custom_interaction(a: np.array, b: np.array) -> np.array:
-    # a = b = 1 -> 2
+    # a = b = 1 -> 0
     # a = b = 0 -> 1
-    # a != b    -> 0
-    return 2 * np.logical_and(a, b) + 1 - np.logical_xor(a, b)
+    # a != b    -> 2
+    return 1 - np.logical_and(a, b) + np.logical_xor(a, b)
 
 
 def integer_feature_custom_interaction(a, b) -> np.array:
     result = np.max([a, b], axis=0) - np.min([a, b],
                                              axis=0)  # absolute difference
-    # Shared high interest, give more importance
-    result += 10 - np.logical_and(a > 6, b > 6) * 4
+    # Shared high interest, give more importance (-> penalize non shared and high interest)
+    result += 4 - np.logical_and(a > 6, b > 6) * 4
     return result
