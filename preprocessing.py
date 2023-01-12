@@ -172,7 +172,7 @@ def feature_interaction_polynomyal_degreee2(X):
     return poly.fit_transform(X)
 
 
-def corresponding_features_interaction(X, drop=False):
+def corresponding_features_interaction(X, drop=True):
     """
     Compute the interactions for the DataFrame X, using the following logic:
         col <- col_x * col_y
@@ -181,7 +181,7 @@ def corresponding_features_interaction(X, drop=False):
     ----------
     X: DataFrame
         The dataset samples
-    drop: bool, optional (default is False)
+    drop: bool, optional (default is True)
         When True, we drop col_x and col_y, leaving just their interaction col
 
     Returns
@@ -211,23 +211,23 @@ def corresponding_features_interaction(X, drop=False):
     return X_
 
 
-def corresponding_features_custom_interaction(X, drop=False):
+def corresponding_features_custom_interaction(X, drop=True):
     """
     Compute the interactions for the DataFrame X, using the following logic:
     For binary features
-    a = b = 1 -> 2
+    a = b = 1 -> 0
     a = b = 0 -> 1
-    a != b    -> 0
+    a != b    -> 2
 
     For integer features
-    a>6 and b>6 -> 6 + abs(a-b)
-    else -> 10 + abs(a-b)
+    a>6 and b>6 -> abs(a-b)
+    else -> 4 + abs(a-b)
 
     Parameters
     ----------
     X: DataFrame
         The dataset samples
-    drop: bool, optional (default is False)
+    drop: bool, optional (default is True)
         When True, we drop col_x and col_y, leaving just their interaction col
 
     Returns
