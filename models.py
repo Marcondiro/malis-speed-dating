@@ -6,9 +6,6 @@
 
 """
 All methods in the models.py file return a classifier and a grid dictionary.
-
-# FIXME - configure all grids
-# TODO - add the scaling feat.?
 """
 
 from sklearn.neighbors import KNeighborsClassifier  # to perform kNN

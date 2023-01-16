@@ -1,5 +1,3 @@
-# TODO - remove
-
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.model_selection import GridSearchCV
@@ -145,7 +143,6 @@ def grid_search(X, y, estimator, grid, k=5):
 
     """
 
-    # TODO add more? - CHOOSE 1 to get the best
     # https://scikit-learn.org/stable/modules/model_evaluation.html#scoring-parameter
     metrics = ['balanced_accuracy', 'f1', 'recall']
     best_metric = 'recall'
