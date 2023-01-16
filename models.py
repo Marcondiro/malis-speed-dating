@@ -53,7 +53,7 @@ def svm():
 
     clf = SVC(max_iter=MAX_ITER, class_weight='balanced')
     grid = {
-        'kernel': ['linear', 'rbf']
+        'kernel': ['linear', 'poly', 'rbf']
     }
 
     return clf, grid
